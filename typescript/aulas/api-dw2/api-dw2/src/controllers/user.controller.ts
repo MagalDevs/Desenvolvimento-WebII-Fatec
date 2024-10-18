@@ -1,4 +1,4 @@
-import { createUserService, deleteUserService, findAllUsersService, updateUserService } from '../services/user.service'
+import { createUserService, deleteUserService, findAllUsersService, findUserByIdWithTasksService, updateUserService } from '../services/user.service'
 import { Request, Response } from 'express'
 
 export const createUser = async (req: Request, res: Response) => {
@@ -34,3 +34,14 @@ export const updateUser = async (req: Request, res: Response) => {
         return res.status(400).json({error})
     }
 }
+
+export const findUserByIdWithTasks = async (req: Request, res: Response) => {
+    const id = Number(req.params.id)
+    
+    if (isNaN(id)) {
+      return res.status(400).json({ message: 'ID inválido' })
+    }
+  
+    const user = await findUserByIdWithTasksService(id)
+    return res.status(200).json(user)
+  }

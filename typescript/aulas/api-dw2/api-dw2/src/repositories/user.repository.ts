@@ -2,7 +2,9 @@ import User from '../entities/user.entity'
 import { createUserDto, updateUserDto } from '../dtos/user.dto'
 
 export const createUser = async (data: createUserDto) => {
-    return User.create({data})
+    const newUser = await User.create({ data }) 
+
+    return { ...newUser, password: undefined } 
 }
 
 export const findUserByEmail = async (email: string) => {
@@ -24,3 +26,8 @@ export const findUserById =async (id: number) => {
 export const updateUser = async (id: number, data: updateUserDto) => {
     return User.update({ where: {id}, data})
 }
+
+export const findUserByIdWithTasks = async (id: number) => {
+    return User.findFirst({ where: { id }, include: { tasks: true } })
+  }
+  
